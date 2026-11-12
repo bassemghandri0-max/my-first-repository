@@ -1,0 +1,2043 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>CodeMaster Pro</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='31' fill='%230a1628' stroke='%232dd4bf' stroke-width='2'/%3E%3Cpath d='M21 15c-4 0-5 2-5 6v6c0 3-2 5-4 5 2 0 4 2 4 5v6c0 4 1 6 5 6' fill='none' stroke='%232dd4bf' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M43 15c4 0 5 2 5 6v6c0 3 2 5 4 5-2 0-4 2-4 5v6c0 4-1 6-5 6' fill='none' stroke='%232dd4bf' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M22 39l7-7 5 5 9-11m0 0h-7m7 0v7' fill='none' stroke='%2334d399' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+    <style>
+      :root {
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        --bg: #e9eef4;
+        --pn: #fff;
+        --ink: #14213a;
+        --mut: #5b6b85;
+        --ac: #0b7a85;
+        --acx: #fff;
+        --xp: #c98f00;
+        --bd: #cfd8e3;
+        --ed: #0f1a2e;
+        --edt: #dce6f5;
+        --ok: #17803d;
+        --er: #c0262d;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          color-scheme: dark;
+          --bg: #0a1120;
+          --pn: #121d33;
+          --ink: #e6edf7;
+          --mut: #93a3bd;
+          --ac: #3cc4cf;
+          --acx: #06222a;
+          --xp: #f2b705;
+          --bd: #24324f;
+          --ed: #0a1322;
+          --ok: #4ade80;
+          --er: #ff7b80;
+        }
+      }
+      :root[data-theme="dark"] {
+        color-scheme: dark;
+        --bg: #0a1120;
+        --pn: #121d33;
+        --ink: #e6edf7;
+        --mut: #93a3bd;
+        --ac: #3cc4cf;
+        --acx: #06222a;
+        --xp: #f2b705;
+        --bd: #24324f;
+        --ed: #0a1322;
+        --ok: #4ade80;
+        --er: #ff7b80;
+      }
+      html {
+        scroll-padding-top: env(safe-area-inset-top, 0px);
+      }
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Familjen Grotesk", system-ui, sans-serif;
+        margin: 0;
+      }
+      .pn {
+        background: var(--pn);
+        border: 1px solid var(--bd);
+        border-radius: 10px;
+      }
+      .mono,
+      textarea,
+      pre,
+      code {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+      }
+      .btn {
+        background: var(--ac);
+        color: var(--acx);
+        font-weight: 600;
+        border-radius: 8px;
+        padding: 0.45rem 0.9rem;
+        border: 0;
+        cursor: pointer;
+      }
+      .btn:focus-visible,
+      .tab:focus-visible,
+      select:focus-visible,
+      textarea:focus-visible,
+      input:focus-visible {
+        outline: 2px solid var(--xp);
+        outline-offset: 2px;
+      }
+      .ghost {
+        background: transparent;
+        color: var(--ink);
+        border: 1px solid var(--bd);
+      }
+      .tab {
+        padding: 0.35rem 0.8rem;
+        border-radius: 8px;
+        border: 1px solid var(--bd);
+        background: transparent;
+        color: var(--ink);
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .tab[aria-selected="true"] {
+        background: var(--ink);
+        color: var(--pn);
+      }
+      .th code,
+      .th pre {
+        background: var(--bg);
+        padding: 0.1rem 0.35rem;
+        border-radius: 5px;
+        font-size: 0.85em;
+      }
+      .th pre {
+        padding: 0.6rem;
+        overflow-x: auto;
+        white-space: pre;
+      }
+      .th h3 {
+        font-weight: 700;
+        margin: 0.9rem 0 0.3rem;
+      }
+      .th li {
+        margin-left: 1.1rem;
+        list-style: disc;
+        margin-bottom: 0.25rem;
+      }
+      #ed {
+        background: var(--ed);
+        color: var(--edt);
+        width: 100%;
+        height: 100%;
+        border: 0;
+        padding: 0.8rem;
+        font-size: 13.5px;
+        line-height: 1.55;
+        resize: none;
+        tab-size: 2;
+        border-radius: 0 0 10px 10px;
+      }
+      .lk {
+        opacity: 0.45;
+      }
+      .dg {
+        font-size: 13px;
+        margin: 0.25rem 0;
+      }
+      .bar {
+        height: 8px;
+        background: var(--bd);
+        border-radius: 6px;
+        overflow: hidden;
+      }
+      .bar i {
+        display: block;
+        height: 100%;
+        background: var(--xp);
+      }
+      dialog {
+        background: var(--pn);
+        color: var(--ink);
+        border: 1px solid var(--bd);
+        border-radius: 12px;
+        max-width: min(92vw, 420px);
+        width: 100%;
+      }
+      dialog::backdrop {
+        background: rgba(5, 10, 20, 0.6);
+      }
+      input,
+      select.f-inp {
+        background: var(--bg);
+        color: var(--ink);
+        border: 1px solid var(--bd);
+        border-radius: 8px;
+        padding: 0.5rem;
+        width: 100%;
+        margin: 0.25rem 0;
+      }
+      select {
+        background: var(--pn);
+        color: var(--ink);
+        border: 1px solid var(--bd);
+        border-radius: 8px;
+        padding: 0.4rem;
+      }
+      @media (min-width: 1024px) {
+        #app {
+          display: grid;
+          grid-template-columns: minmax(300px, 40%) 1fr;
+          height: calc(100vh - 118px);
+        }
+      }
+
+      /* Landing Page Styles */
+      .al {
+        position: fixed;
+        inset: 0;
+        z-index: 55;
+        display: grid;
+        grid-template-columns: 1fr;
+        overflow: auto;
+        background: #070d0b;
+        color: #eaf6f0;
+      }
+      .al[hidden] {
+        display: none;
+      }
+      .alL {
+        position: relative;
+        overflow: hidden;
+        padding: calc(28px + env(safe-area-inset-top, 0px)) 24px 28px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 1.1rem;
+        background:
+          radial-gradient(
+            90% 70% at 0% 0%,
+            rgba(16, 185, 129, 0.35),
+            transparent 60%
+          ),
+          radial-gradient(
+            80% 70% at 100% 100%,
+            rgba(255, 122, 26, 0.32),
+            transparent 60%
+          ),
+          #07100d;
+      }
+      .alL .sh {
+        position: absolute;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 28px;
+        pointer-events: none;
+      }
+      .alL .s1 {
+        width: 260px;
+        height: 260px;
+        right: -70px;
+        top: -60px;
+        transform: rotate(18deg);
+        background: linear-gradient(
+          135deg,
+          rgba(16, 185, 129, 0.22),
+          transparent
+        );
+      }
+      .alL .s2 {
+        width: 180px;
+        height: 180px;
+        left: -50px;
+        bottom: -40px;
+        transform: rotate(-14deg);
+        background: linear-gradient(
+          135deg,
+          rgba(255, 122, 26, 0.25),
+          transparent
+        );
+      }
+      .albadge {
+        position: relative;
+        align-self: flex-start;
+        padding: 0.4rem 0.85rem;
+        border-radius: 99px;
+        font-size: 0.85rem;
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+      }
+      .albadge b {
+        color: #34d399;
+      }
+      .alL h1 {
+        position: relative;
+        font-size: clamp(2rem, 5.2vw, 3.6rem);
+        font-weight: 700;
+        line-height: 1.05;
+        max-width: 16ch;
+        letter-spacing: -0.01em;
+      }
+      .alL p {
+        position: relative;
+        max-width: 46ch;
+        color: #b7cbc2;
+        line-height: 1.55;
+        font-size: 1.05rem;
+      }
+      .alcta {
+        position: relative;
+        align-self: flex-start;
+        border: 0;
+        cursor: pointer;
+        font:
+          600 1rem "Familjen Grotesk",
+          sans-serif;
+        padding: 0.85rem 1.2rem;
+        border-radius: 10px;
+        color: #1a0b00;
+        background: #ff8a2b;
+        box-shadow: 0 0 28px rgba(255, 138, 43, 0.45);
+        transition: transform 0.15s;
+      }
+      .alcta:active {
+        transform: scale(0.98);
+      }
+      .alcta:disabled {
+        opacity: 0.6;
+        cursor: wait;
+      }
+      .alR {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        background: #0b1210;
+      }
+      .alcard {
+        width: 100%;
+        max-width: 440px;
+        background: #fff;
+        color: #122019;
+        border-radius: 16px;
+        padding: 1.6rem;
+        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+      }
+      .alcard h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+      .alcard .mu {
+        color: #5a6b63;
+        font-size: 0.9rem;
+        margin: 0.2rem 0 0.8rem;
+      }
+      .alcard label {
+        display: block;
+        font-size: 0.82rem;
+        font-weight: 600;
+        margin-top: 0.55rem;
+        color: #24352d;
+      }
+      .alcard input,
+      .alcard select {
+        background: #f3f7f5;
+        color: #122019;
+        border: 1px solid #cfdad5;
+        margin: 0.2rem 0 0;
+        padding: 0.55rem 0.75rem;
+        border-radius: 8px;
+        width: 100%;
+        font-size: 0.92rem;
+      }
+      .alcard .row2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.6rem;
+      }
+      .alcard .alcta {
+        align-self: stretch;
+        width: 100%;
+        margin-top: 1.1rem;
+        box-shadow: none;
+        text-align: center;
+      }
+      .alcard .lk2 {
+        background: none;
+        border: 0;
+        color: #0a8f64;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: underline;
+        padding: 0;
+      }
+      #almsg {
+        min-height: 1.3em;
+        font-size: 0.85rem;
+        margin-top: 0.75rem;
+        line-height: 1.4;
+        font-weight: 600;
+      }
+      .alcard :focus-visible,
+      .alL :focus-visible {
+        outline: 2px solid #ff8a2b;
+        outline-offset: 2px;
+      }
+      .tabs-auth {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        background: #eef3f0;
+        padding: 4px;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+      }
+      .tab-a {
+        padding: 0.45rem;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: #5a6b63;
+        cursor: pointer;
+        border: 0;
+        background: transparent;
+        transition: all 0.2s;
+      }
+      .tab-a.active {
+        background: #fff;
+        color: #122019;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      }
+      @media (min-width: 900px) {
+        .al {
+          grid-template-columns: 1.1fr 1fr;
+        }
+        .alL {
+          padding: 56px;
+        }
+      }
+
+      /* Welcome White Screen Styles */
+      #welcome-screen {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        background: #ffffff;
+        color: #111827;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition:
+          opacity 0.5s ease,
+          visibility 0.5s ease;
+      }
+      #welcome-screen[hidden] {
+        display: none;
+        opacity: 0;
+        pointer-events: none;
+      }
+      .wc-card {
+        text-align: center;
+        padding: 2.5rem;
+        border-radius: 24px;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+        max-width: 90vw;
+        width: 400px;
+      }
+      .wc-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #10b981, #047857);
+        color: #fff;
+        font-size: 2.2rem;
+        font-weight: 700;
+        display: grid;
+        place-items: center;
+        margin: 0 auto 1.2rem;
+        box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3);
+      }
+      .wc-badge {
+        display: inline-block;
+        background: #e6f7f0;
+        color: #047857;
+        font-size: 0.8rem;
+        font-weight: 700;
+        padding: 0.25rem 0.75rem;
+        border-radius: 99px;
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- MAIN AUTH LANDING PAGE -->
+    <div
+      id="auth-landing"
+      class="al"
+      role="dialog"
+      aria-label="Bienvenue sur CodeMaster Pro"
+    >
+      <section class="alL">
+        <i class="sh s1"></i><i class="sh s2"></i>
+        <div class="albadge">
+          <b>CodeMaster Pro</b> | Plateforme EdTech 100% Gratuite
+        </div>
+        <h1>APPRENEZ LE CODE DE ZÉRO À PRO</h1>
+        <p>
+          Éditeur interactif, diagnostic en temps réel, système de niveaux XP et
+          sauvegarde cloud sécurisée.
+        </p>
+        <button id="alguest" class="alcta">
+          🚀 Essayer la Leçon 1 gratuitement (Mode Invité)
+        </button>
+      </section>
+
+      <section class="alR">
+        <div class="alcard">
+          <!-- Switcher Login / Create Account -->
+          <div class="tabs-auth">
+            <button type="button" class="tab-a active" id="tab-signup">
+              Créer un compte
+            </button>
+            <button type="button" class="tab-a" id="tab-login">
+              Se connecter
+            </button>
+          </div>
+
+          <h2 id="alh">Nouveau compte</h2>
+          <p class="mu" id="alsub-desc">
+            Remplissez vos informations pour personnaliser votre parcours.
+          </p>
+
+          <!-- Extra Fields (Visible only on Sign Up) -->
+          <div id="signup-fields">
+            <div class="row2">
+              <div>
+                <label for="al-prenom">Prénom *</label>
+                <input
+                  id="al-prenom"
+                  type="text"
+                  placeholder="Ex: Bassem"
+                  required
+                />
+              </div>
+              <div>
+                <label for="al-nom">Nom *</label>
+                <input
+                  id="al-nom"
+                  type="text"
+                  placeholder="Ex: Ghandri"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="row2">
+              <div>
+                <label for="al-dob">Date de naissance *</label>
+                <input id="al-dob" type="date" required />
+              </div>
+              <div>
+                <label for="al-level">Votre niveau *</label>
+                <select id="al-level">
+                  <option value="debutant">🌱 Débutant</option>
+                  <option value="intermediaire">⚡ Intermédiaire</option>
+                  <option value="pro">🚀 Pro</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Common Fields (Email & Password) -->
+          <label for="alem">Adresse Email *</label>
+          <input
+            id="alem"
+            type="email"
+            autocomplete="email"
+            placeholder="vous@exemple.com"
+            required
+          />
+
+          <label for="alpw" id="alpl">Mot de passe *</label>
+          <input
+            id="alpw"
+            type="password"
+            autocomplete="new-password"
+            placeholder="6 caractères minimum"
+            required
+          />
+
+          <button id="alsub" class="alcta">
+            Créer mon compte &amp; Vérifier l'email
+          </button>
+          <div id="almsg" aria-live="polite"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- WHITE WELCOME SCREEN -->
+    <div id="welcome-screen" hidden>
+      <div class="wc-card">
+        <div class="wc-avatar" id="wc-avatar">U</div>
+        <div class="wc-badge" id="wc-level-badge">Niveau : Débutant</div>
+        <h1 class="text-3xl font-bold tracking-tight mb-2" id="wc-title">
+          Bonjour!
+        </h1>
+        <p class="text-gray-500 mb-6" id="wc-subtitle">
+          Votre compte est vérifié. Prêt à coder ?
+        </p>
+        <button id="wc-btn" class="btn text-base px-6 py-2.5 w-full">
+          Commencer l'apprentissage 🚀
+        </button>
+      </div>
+    </div>
+
+    <header class="px-4 py-3 flex flex-wrap items-center gap-3">
+      <div class="font-bold text-xl">
+        CodeMaster <span style="color: var(--ac)">Pro</span>
+      </div>
+      <nav
+        id="paths"
+        class="flex gap-2 flex-wrap"
+        role="tablist"
+        aria-label="Learning paths"
+      ></nav>
+      <div class="ml-auto flex items-center gap-3 flex-wrap">
+        <div class="w-40">
+          <div class="text-xs mono flex justify-between">
+            <span id="lvl"></span><span id="xp" style="color: var(--xp)"></span>
+          </div>
+          <div class="bar mt-1"><i id="xpb"></i></div>
+        </div>
+        <button class="btn ghost tab" id="jump">Test my level</button>
+        <button class="btn" id="auth">Connexion</button>
+        <button class="tab" id="theme" aria-label="Toggle theme">◐</button>
+      </div>
+    </header>
+
+    <div class="px-4 pb-1 text-xs" style="color: var(--mut)" id="sync">
+      Mode invité : progression enregistrée sur cet appareil. Créez un compte
+      gratuit pour tout sauvegarder.
+    </div>
+
+    <main id="app" class="px-4 pb-4 gap-3 flex flex-col">
+      <section class="pn p-4 overflow-auto th" aria-label="Lesson">
+        <div class="flex gap-2 items-center mb-2">
+          <select id="lessons" aria-label="Lesson"></select
+          ><span id="done" class="text-sm font-semibold"></span>
+        </div>
+        <h2 id="lt" class="text-2xl font-bold"></h2>
+        <h3>The big picture</h3>
+        <div
+          id="big"
+          class="p-3 rounded-lg leading-relaxed"
+          style="background: var(--bg); border-left: 4px solid var(--ac)"
+        ></div>
+        <h3 id="tt">Syntax</h3>
+        <div id="theory" class="leading-relaxed"></div>
+        <h3>Line by line</h3>
+        <ol id="lines" class="leading-relaxed"></ol>
+        <h3>Your challenge</h3>
+        <p
+          id="task"
+          class="p-3 rounded-lg"
+          style="background: var(--bg); border-left: 4px solid var(--xp)"
+        ></p>
+      </section>
+      <div class="flex flex-col gap-3 min-h-0" style="min-height: 70vh">
+        <section
+          class="pn flex flex-col min-h-0 flex-1"
+          style="min-height: 260px"
+        >
+          <div
+            class="flex items-center gap-2 p-2 border-b"
+            style="border-color: var(--bd)"
+          >
+            <span class="mono text-sm font-semibold" id="fn"></span>
+            <span class="text-xs ml-2" style="color: var(--mut)"
+              >Tab expands snippets (h1, ul, html5, log, fn, echo)</span
+            >
+            <button class="btn ml-auto" id="check">
+              Validate &amp; earn XP
+            </button>
+            <button class="btn ghost tab" id="reset">Reset</button>
+          </div>
+          <div class="flex-1 min-h-0">
+            <textarea
+              id="ed"
+              spellcheck="false"
+              aria-label="Code editor"
+            ></textarea>
+          </div>
+        </section>
+        <section
+          class="pn flex flex-col min-h-0 flex-1"
+          style="min-height: 260px"
+        >
+          <iframe
+            id="pv"
+            title="Live preview"
+            sandbox="allow-scripts"
+            class="flex-1 w-full bg-white rounded-t-[10px]"
+            style="min-height: 150px"
+          ></iframe>
+          <div
+            id="dg"
+            class="p-2 overflow-auto border-t mono"
+            style="border-color: var(--bd); max-height: 38%; min-height: 70px"
+            aria-live="polite"
+          ></div>
+        </section>
+      </div>
+    </main>
+    <dialog id="dlg"><div id="dlgb" class="p-5"></div></dialog>
+
+    <script>
+      const MODULES = {
+        html: "HTML5",
+        css: "CSS3",
+        js: "JavaScript",
+        php: "PHP",
+      };
+      const LESSONS = [
+        {
+          id: "html1",
+          module: "html",
+          title: "Page structure and headings",
+          generalExplanation: `<b>Analogy: a house.</b> Every website is built like a house. <code>&lt;html&gt;</code> is the whole building, <code>&lt;head&gt;</code> is the paperwork in the drawer (title, settings) and <code>&lt;body&gt;</code> is every room visitors walk through. Headings are the door signs; paragraphs are the furniture. <b>Why it exists:</b> browsers cannot guess what your text means, so tags label it. <b>Real world:</b> every page you have ever visited is HTML underneath.`,
+          theoryTitle: "Syntax",
+          theory: `<p>HTML describes content with <b>tags</b>. A tag opens with <code>&lt;name&gt;</code> and closes with <code>&lt;/name&gt;</code>. Headings run from <code>h1</code> (most important) to <code>h6</code>; <code>p</code> holds a paragraph.</p><pre>&lt;h1&gt;Title&lt;/h1&gt;
+&lt;p&gt;Some text.&lt;/p&gt;</pre>`,
+          breakdown: [
+            `<code>&lt;h1&gt;</code> opens the main heading.`,
+            `The text between the tags is what visitors read.`,
+            `<code>&lt;/h1&gt;</code> closes it. Every opened tag needs a closing partner.`,
+            `<code>&lt;p&gt;</code> starts a paragraph below the heading.`,
+          ],
+          challenge:
+            "Write an <h1> that contains your name and a <p> that describes you.",
+          starterCode: "<!-- Write your h1 and p below -->\n",
+          validationRules: {
+            mustContain: [],
+            mustNotContain: [],
+            mustMatch: [
+              {
+                regex: /<h1[^>]*>\s*\S[\s\S]*?<\/h1>/i,
+                message: "Add an <h1>…</h1> with text inside.",
+              },
+              {
+                regex: /<p[^>]*>\s*\S[\s\S]*?<\/p>/i,
+                message: "Add a <p>…</p> with text inside.",
+              },
+            ],
+          },
+        },
+        {
+          id: "html2",
+          module: "html",
+          title: "Links and lists",
+          generalExplanation: `<b>Analogy: a book.</b> Lists are the table of contents and shopping lists of the web; links are the doors between rooms. Without links there would be no “web”, only lonely pages. <b>Real world:</b> menus, search results and every “click here” are lists and links.`,
+          theoryTitle: "Syntax",
+          theory: `<p>Links use <code>&lt;a href="…"&gt;</code>. The <code>href</code> attribute is the destination. A bullet list is <code>&lt;ul&gt;</code> holding one <code>&lt;li&gt;</code> per item.</p><pre>&lt;a href="https://example.com"&gt;Visit&lt;/a&gt;
+&lt;ul&gt;&lt;li&gt;One&lt;/li&gt;&lt;/ul&gt;</pre>`,
+          breakdown: [
+            `<code>href</code> is an attribute: it adds information to a tag.`,
+            `The link text sits between <code>&lt;a&gt;</code> and <code>&lt;/a&gt;</code>.`,
+            `<code>&lt;ul&gt;</code> wraps the list; each <code>&lt;li&gt;</code> is one bullet.`,
+          ],
+          challenge:
+            "Create a link with an href, then a <ul> with at least 3 <li> items.",
+          starterCode: "<h1>My favourites</h1>\n",
+          validationRules: {
+            mustContain: [],
+            mustNotContain: [],
+            mustMatch: [
+              {
+                regex: /<a\s[^>]*href=["'][^"']+["'][^>]*>\s*\S/i,
+                message: 'Add <a href="…">text</a>.',
+              },
+              {
+                regex: /<ul[^>]*>(\s*<li[^>]*>[\s\S]*?<\/li>\s*){3,}<\/ul>/i,
+                message: "Add a <ul> containing at least 3 <li>…</li>.",
+              },
+            ],
+          },
+        },
+        {
+          id: "html3",
+          module: "html",
+          title: "Images and multimedia",
+          generalExplanation: `<b>Analogy: a picture frame.</b> The page does not contain the photo; it holds a frame that points to a file stored somewhere. If the file is missing, the frame shows a note describing the picture: that note is the <code>alt</code> text, and it also lets screen readers describe images to blind users. <b>Real world:</b> product photos, avatars, logos.`,
+          theoryTitle: "Syntax",
+          theory: `<p>An image is <code>&lt;img src="path" alt="description"&gt;</code>. It has no closing tag (a <b>void</b> element). <code>src</code> is the file location: <code>photo.jpg</code> (same folder), <code>images/photo.jpg</code> (subfolder) or a full URL. Add <code>width</code> to control size.</p><pre>&lt;img src="cat.jpg" alt="A sleeping cat" width="300"&gt;</pre>`,
+          breakdown: [
+            `<code>src</code> tells the browser where the file lives.`,
+            `<code>alt</code> is the fallback and accessibility text: always fill it.`,
+            `<code>width</code> sets display width in pixels.`,
+            `No closing tag: the tag is complete on its own.`,
+          ],
+          challenge:
+            "Add an <img> with src, a meaningful alt and a width, then a <p> caption under it.",
+          starterCode: "<h1>Gallery</h1>\n",
+          validationRules: {
+            mustContain: [],
+            mustNotContain: [],
+            mustMatch: [
+              {
+                regex: /<img\s[^>]*src=["'][^"']+["']/i,
+                message: 'Add <img src="…">.',
+              },
+              {
+                regex: /<img\s[^>]*alt=["'][^"']+["']/i,
+                message: 'Add a non-empty alt="…" to the image.',
+              },
+              {
+                regex: /<img\s[^>]*(width|height)=/i,
+                message: "Add a width (or height) attribute.",
+              },
+              {
+                regex: /<p[^>]*>\s*\S[\s\S]*?<\/p>/i,
+                message: "Add a <p> caption with text.",
+              },
+            ],
+          },
+        },
+        {
+          id: "html4",
+          module: "html",
+          title: "User input and forms",
+          generalExplanation: `<b>Analogy: a paper form at a reception desk.</b> Each field has a printed label and a space for the answer; the button hands the sheet over. Different input types are different boxes: a text line, an email line, a tick box. <b>Why it exists:</b> it is the only way a website can ask you things. <b>Real world:</b> logins, searches, checkouts.`,
+          theoryTitle: "Syntax",
+          theory: `<p>A <code>&lt;form&gt;</code> groups fields. Each <code>&lt;input&gt;</code> has a <code>type</code> (text, email, password, checkbox). A <code>&lt;label for="id"&gt;</code> is linked to the input with that <code>id</code>, so clicking the label focuses the field.</p><pre>&lt;form&gt;
+  &lt;label for="em"&gt;Email&lt;/label&gt;
+  &lt;input id="em" type="email"&gt;
+  &lt;button type="submit"&gt;Send&lt;/button&gt;
+&lt;/form&gt;</pre>`,
+          breakdown: [
+            `<code>&lt;form&gt;</code> wraps everything that will be sent together.`,
+            `<code>for</code> and <code>id</code> must match to link label and input.`,
+            `<code>type="email"</code> makes the browser check the format.`,
+            `The submit button sends the form.`,
+          ],
+          challenge:
+            "Build a form with a label linked to an email input (matching for/id) and a submit button.",
+          starterCode: "<h1>Join us</h1>\n",
+          validationRules: {
+            mustContain: [],
+            mustNotContain: [],
+            mustMatch: [
+              {
+                regex: /<form[\s>][\s\S]*<\/form>/i,
+                message: "Wrap your fields in <form>…</form>.",
+              },
+              {
+                regex:
+                  /<label\s[^>]*for=["'](\w+)["'][^>]*>[\s\S]*?<\/label>[\s\S]*<input\s[^>]*id=["']\1["']/i,
+                message:
+                  'Add <label for="x"> and an <input id="x"> with the same name.',
+              },
+              {
+                regex: /<input\s[^>]*type=["']email["']/i,
+                message: 'Use an input with type="email".',
+              },
+              {
+                regex:
+                  /<button[^>]*>\s*\S[\s\S]*?<\/button>|<input[^>]*type=["']submit["']/i,
+                message: "Add a submit <button>…</button>.",
+              },
+            ],
+          },
+        },
+        {
+          id: "html5",
+          module: "html",
+          title: "Tables and semantic layout",
+          generalExplanation: `<b>Analogy: a newspaper layout.</b> A newspaper has a masthead, a navigation index, articles and a footer. Semantic tags give your page the same named zones, so search engines and screen readers know where everything is. A table is a spreadsheet: rows (<code>tr</code>) hold cells (<code>td</code>). <b>Real world:</b> timetables, price lists, every modern site layout.`,
+          theoryTitle: "Syntax",
+          theory: `<p>Semantic tags name page zones: <code>header</code>, <code>nav</code>, <code>main</code>, <code>footer</code>. Tables use <code>table</code> &gt; <code>tr</code> (row) &gt; <code>th</code> (heading cell) or <code>td</code> (data cell).</p><pre>&lt;table&gt;
+  &lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Age&lt;/th&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;Sam&lt;/td&gt;&lt;td&gt;20&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;</pre>`,
+          breakdown: [
+            `<code>header</code>/<code>nav</code>/<code>footer</code> give meaning, unlike plain divs.`,
+            `<code>tr</code> makes a row; cells go inside it.`,
+            `<code>th</code> marks column titles; <code>td</code> holds data.`,
+          ],
+          challenge:
+            "Create a header containing a nav, a table with a header row and one data row, and a footer.",
+          starterCode: "<!-- header > nav, table, footer -->\n",
+          validationRules: {
+            mustContain: [],
+            mustNotContain: [],
+            mustMatch: [
+              {
+                regex: /<header[\s>][\s\S]*<\/header>/i,
+                message: "Add a <header>.",
+              },
+              { regex: /<nav[\s>][\s\S]*<\/nav>/i, message: "Add a <nav>." },
+              {
+                regex:
+                  /<table[\s>][\s\S]*<tr[\s>][\s\S]*<th[\s>][\s\S]*<\/th>[\s\S]*<tr[\s>][\s\S]*<td[\s>][\s\S]*<\/td>[\s\S]*<\/table>/i,
+                message:
+                  "Add a <table> with a <tr><th>…</th></tr> row and a <tr><td>…</td></tr> row.",
+              },
+              {
+                regex: /<footer[\s>][\s\S]*<\/footer>/i,
+                message: "Add a <footer>.",
+              },
+            ],
+          },
+        },
+        {
+          id: "css1",
+          module: "css",
+          title: "Selectors, colors and sizes",
+          generalExplanation: `<b>Analogy: interior decoration.</b> HTML builds the room; CSS picks paint, fonts and sizes. A CSS rule says “everything of this kind gets this look”, so one line can restyle a thousand headings. <b>Real world:</b> brand colours and typography across an entire site.`,
+          theoryTitle: "Syntax",
+          theory: `<p>CSS styles elements. A <b>rule</b> is a selector plus declarations in braces: <code>property: value;</code>. The preview page already has an <code>h1</code>, two <code>p</code> and a <code>.card</code>.</p><pre>h1 { color: tomato; }</pre>`,
+          breakdown: [
+            `<code>h1</code> is the selector: it targets every h1.`,
+            `<code>color</code> is the property, <code>tomato</code> is the value.`,
+            `The semicolon ends the declaration; the brace ends the rule.`,
+          ],
+          challenge: "Give the h1 a color and set the p font-size to 20px.",
+          starterCode: "/* Style the page */\nh1 {\n  \n}\n",
+          validationRules: {
+            mustContain: [],
+            mustNotContain: [],
+            mustMatch: [
+              {
+                regex: /h1\s*\{[^}]*\bcolor\s*:\s*[^;}]+/i,
+                message: "Set a color inside the h1 rule.",
+              },
+              {
+                regex: /\bp\s*\{[^}]*font-size\s*:\s*20px/i,
+                message: "Add p { font-size: 20px; }.",
+              },
+            ],
+          },
+        },
+        {
+          id: "cssbox",
+          module: "css",
+          title: "The box model",
+          generalExplanation: `<b>Analogy: a framed painting on a wall.</b> The painting is the <b>content</b>; the mat around it is <b>padding</b>; the frame is the <b>border</b>; the gap to the next painting is the <b>margin</b>. Every element on the web is one of these boxes. <b>Why it matters:</b> spacing problems are nearly always box-model problems.`,
+          theoryTitle: "Syntax",
+          theory: `<p>Each element is a box: <b>content</b> inside, then <code>padding</code> (inner space), <code>border</code> (the line) and <code>margin</code> (outer space). Total width = content + padding + border. <code>box-sizing: border-box</code> makes <code>width</code> include them, which is far easier to reason about.</p><pre>.box {
+  width: 200px;
+  padding: 16px;
+  border: 3px solid navy;
+  margin: 20px;
+}</pre>`,
+          breakdown: [
+            `<code>width</code> sets the content size.`,
+            `<code>padding</code> pushes content away from the border.`,
+            `<code>border</code> takes width, style and colour in one line.`,
+            `<code>margin</code> keeps neighbours away.`,
+          ],
+          challenge:
+            "Style .box with a width, padding, a solid border, a margin and box-sizing: border-box.",
+          starterCode: ".box {\n  background: #dff;\n}\n",
+          validationRules: {
+            mustContain: [],
+            mustNotContain: [],
+            mustMatch: [
+              {
+                regex: /\.box\s*\{[^}]*\bwidth\s*:\s*\d+/i,
+                message: "Set a width on .box.",
+              },
+              {
+                regex: /\.box\s*\{[^}]*\bpadding\s*:\s*\d/i,
+                message: "Add padding to .box.",
+              },
+              {
+                regex: /\.box\s*\{[^}]*\bborder\s*:\s*\d+px\s+\w+/i,
+                message: "Add border: 3px solid color;",
+              },
+              {
+                regex: /\.box\s*\{[^}]*\bmargin\s*:\s*\d/i,
+                message: "Add margin to .box.",
+              },
+              {
+                regex: /box-sizing\s*:\s*border-box/i,
+                message: "Add box-sizing: border-box;",
+              },
+            ],
+          },
+        },
+        {
+          id: "css2",
+          module: "css",
+          title: "Layout with Flexbox",
+          generalExplanation: `<b>Analogy: a shelf with elastic dividers.</b> Flexbox lays items along a row like books on a shelf, and you choose how they spread: pushed left, centred, or spaced evenly. <b>Real world:</b> navigation bars, card rows, centring anything.`,
+          theoryTitle: "Syntax",
+          theory: `<p><code>display: flex</code> turns a container into a flex row; its children line up side by side. <code>justify-content</code> spaces them and <code>gap</code> adds distance between items.</p><pre>.card { display: flex; }</pre>`,
+          breakdown: [
+            `<code>.card</code> targets elements with class card.`,
+            `<code>display: flex</code> activates flexbox.`,
+            `<code>justify-content: center</code> centers items on the main axis.`,
+          ],
+          challenge:
+            "Make .card a flex container, center its items with justify-content and add a gap.",
+          starterCode: ".card {\n  background: #eef;\n  padding: 12px;\n}\n",
+          validationRules: {
+            mustContain: [],
+            mustNotContain: [],
+            mustMatch: [
+              {
+                regex: /\.card\s*\{[^}]*display\s*:\s*flex/i,
+                message: "Add display: flex to .card.",
+              },
+              {
+                regex:
+                  /justify-content\s*:\s*(center|space-between|space-around|space-evenly)/i,
+                message: "Add justify-content: center;",
+              },
+              {
+                regex: /\bgap\s*:\s*\d/i,
+                message: "Add a gap, e.g. gap: 16px;",
+              },
+            ],
+          },
+        },
+        {
+          id: "cssmq",
+          module: "css",
+          title: "Responsive design and media queries",
+          generalExplanation: `<b>Analogy: clothes that fit any body.</b> A phone, a tablet and a monitor are different widths. A media query is a question: “is the screen narrower than 600px?” If yes, apply these extra rules. <b>Real world:</b> over half of web traffic is mobile, so this is mandatory.`,
+          theoryTitle: "Syntax",
+          theory: `<p><code>@media (max-width: 600px) { … }</code> applies the rules inside only when the viewport is 600px wide or less. Design for mobile first with base rules, then adjust. Drag the preview wider or narrower by resizing your window to see it react.</p><pre>h1 { font-size: 40px; }
+@media (max-width: 600px) {
+  h1 { font-size: 24px; }
+}</pre>`,
+          breakdown: [
+            `The base rule applies everywhere.`,
+            `<code>@media</code> opens a conditional block.`,
+            `<code>max-width: 600px</code> is the condition.`,
+            `Rules inside override the base ones when the condition is true.`,
+          ],
+          challenge:
+            "Set a base h1 font-size, then add a @media (max-width: …px) block that makes it smaller and turns .card into a column with flex-direction.",
+          starterCode: ".card { display: flex; gap: 8px; }\nh1 { }\n",
+          validationRules: {
+            mustContain: [],
+            mustNotContain: [],
+            mustMatch: [
+              {
+                regex: /\bh1\s*\{[^}]*font-size\s*:\s*\d+/i,
+                message: "Give h1 a base font-size.",
+              },
+              {
+                regex: /@media\s*\(\s*(max|min)-width\s*:\s*\d+px\s*\)\s*\{/i,
+                message: "Add @media (max-width: 600px) { … }.",
+              },
+              {
+                regex: /@media[^{]*\{[\s\S]*flex-direction\s*:\s*column/i,
+                message:
+                  "Inside the media query, set .card { flex-direction: column; }.",
+              },
+            ],
+          },
+        },
+        {
+          id: "js1",
+          module: "js",
+          title: "Variables and console.log",
+          generalExplanation: `<b>Analogy: labelled boxes.</b> A variable is a box with a label on it, and you put a value inside. HTML and CSS describe; JavaScript <i>acts</i>. <b>Real world:</b> remembering a score, a username or a cart total.`,
+          theoryTitle: "Syntax",
+          theory: `<p>Variables store values. Use <code>const</code> when the value will not change and <code>let</code> when it will. <code>console.log()</code> prints to the console panel.</p><pre>const name = "Sam";
+console.log(name);</pre>`,
+          breakdown: [
+            `<code>const</code> declares a variable.`,
+            `<code>name</code> is its label; <code>=</code> assigns a value.`,
+            `Strings go in quotes; numbers do not.`,
+            `<code>console.log</code> shows the value for debugging.`,
+          ],
+          challenge:
+            "Declare a const holding your name and a let holding your age, then log both.",
+          starterCode: "// Your code here\n",
+          validationRules: {
+            mustContain: [],
+            mustNotContain: [],
+            mustMatch: [
+              {
+                regex: /\bconst\s+\w+\s*=/,
+                message: "Declare a variable with const.",
+              },
+              {
+                regex: /\blet\s+\w+\s*=/,
+                message: "Declare a variable with let.",
+              },
+              {
+                regex: /console\.log\s*\(/,
+                message: "Call console.log(…) to print.",
+              },
+            ],
+          },
+        },
+        {
+          id: "js2",
+          module: "js",
+          title: "Functions and the DOM",
+          generalExplanation: `<b>Analogy: a recipe card.</b> Write the steps once, then cook it any time by calling its name. Ingredients you hand over are parameters. The DOM is the live page, and JavaScript can edit it like a whiteboard. <b>Real world:</b> any button that updates text.`,
+          theoryTitle: "Syntax",
+          theory: `<p>A function is a reusable block of code. The <b>DOM</b> lets JavaScript change the page. The preview contains <code>&lt;div id="app"&gt;</code>.</p><pre>function hello() {
+  document.getElementById("app").textContent = "Hi";
+}
+hello();</pre>`,
+          breakdown: [
+            `<code>function hello()</code> defines the function.`,
+            `<code>getElementById</code> finds the element.`,
+            `<code>textContent</code> sets its text.`,
+            `<code>hello();</code> actually runs it.`,
+          ],
+          challenge:
+            "Write a function greet(name) that puts a greeting in #app, then call it.",
+          starterCode: "// Define greet(name) and call it\n",
+          validationRules: {
+            mustContain: [],
+            mustNotContain: [],
+            mustMatch: [
+              {
+                regex: /function\s+greet\s*\(\s*\w+\s*\)|const\s+greet\s*=/,
+                message: "Define a function named greet with a parameter.",
+              },
+              {
+                regex:
+                  /getElementById\s*\(\s*["']app["']\s*\)|querySelector\s*\(\s*["']#app["']\s*\)/,
+                message: "Select the #app element.",
+              },
+              {
+                regex: /textContent|innerHTML|innerText/,
+                message: "Set textContent on the element.",
+              },
+              {
+                regex: /\bgreet\s*\(\s*["'`][^)]+\)\s*;?\s*$/m,
+                message: 'Call greet("Sam") after defining it.',
+              },
+            ],
+          },
+        },
+        {
+          id: "jsev",
+          module: "js",
+          title: "Events and interactivity",
+          generalExplanation: `<b>Analogy: a doorbell.</b> Your code waits quietly until someone rings (clicks). An event listener says “when this happens, run that function”. <b>Real world:</b> every button, menu and like icon.`,
+          theoryTitle: "Syntax",
+          theory: `<p><code>element.addEventListener("click", function)</code> runs your function whenever the event happens. The preview has a button <code>#btn</code> and a <code>#app</code> area.</p><pre>const btn = document.getElementById("btn");
+btn.addEventListener("click", () =&gt; {
+  document.getElementById("app").textContent = "Clicked!";
+});</pre>`,
+          breakdown: [
+            `Select the button first.`,
+            `<code>"click"</code> names the event.`,
+            `The arrow function is the reaction.`,
+            `Inside it you can change text or styles.`,
+          ],
+          challenge:
+            "Select #btn, listen for a click and update the text of #app inside the handler.",
+          starterCode: 'const btn = document.getElementById("btn");\n',
+          validationRules: {
+            mustContain: [],
+            mustNotContain: [],
+            mustMatch: [
+              {
+                regex:
+                  /getElementById\s*\(\s*["']btn["']\s*\)|querySelector\s*\(\s*["']#btn["']\s*\)/,
+                message: "Select the #btn element.",
+              },
+              {
+                regex: /addEventListener\s*\(\s*["']click["']/,
+                message: 'Call addEventListener("click", …).',
+              },
+              {
+                regex: /addEventListener[\s\S]*(textContent|innerHTML|style\.)/,
+                message:
+                  "Change #app (textContent or style) inside the handler.",
+              },
+            ],
+          },
+        },
+        {
+          id: "jsarr",
+          module: "js",
+          title: "Arrays, loops and conditionals",
+          generalExplanation: `<b>Analogy: a to-do list with a robot assistant.</b> An array is an ordered list; a loop is the robot reading each line; an <code>if</code> is the robot deciding what to do with it. <b>Real world:</b> feeds, shopping carts, search results.`,
+          theoryTitle: "Syntax",
+          theory: `<p>An array holds many values: <code>["a", "b"]</code>. <code>push()</code> adds one. A <code>for</code> loop repeats code; <code>if / else</code> chooses between paths.</p><pre>const nums = [3, 8, 12];
+for (let i = 0; i &lt; nums.length; i++) {
+  if (nums[i] &gt; 5) console.log(nums[i] + " is big");
+  else console.log(nums[i] + " is small");
+}</pre>`,
+          breakdown: [
+            `Square brackets create the array.`,
+            `The loop counter <code>i</code> walks from 0 to the last index.`,
+            `<code>nums[i]</code> reads the current item.`,
+            `<code>if/else</code> picks the message.`,
+          ],
+          challenge:
+            "Create an array of numbers, push one more, loop over it with for and console.log each with an if/else.",
+          starterCode: "const nums = [3, 8, 12];\n",
+          validationRules: {
+            mustContain: [],
+            mustNotContain: [],
+            mustMatch: [
+              { regex: /\[[^\]]+\]/, message: "Create an array with [ … ]." },
+              { regex: /\.push\s*\(/, message: "Add an item using .push(…)." },
+              { regex: /for\s*\(/, message: "Write a for loop." },
+              {
+                regex: /\bif\s*\([\s\S]*\belse\b/,
+                message: "Add an if … else inside the loop.",
+              },
+              { regex: /console\.log\s*\(/, message: "Log with console.log." },
+            ],
+          },
+        },
+        {
+          id: "php1",
+          module: "php",
+          title: "Your first PHP: echo",
+          generalExplanation: `<b>Analogy: a kitchen behind a restaurant.</b> HTML/CSS/JS run in the dining room (your browser). PHP runs in the kitchen (the server), prepares the dish, and only the finished HTML reaches the customer, who never sees the PHP. <b>Real world:</b> WordPress and Facebook’s early code are PHP.`,
+          theoryTitle: "Syntax",
+          theory: `<p>PHP runs on a server and sends HTML to the browser. Code lives between <code>&lt;?php</code> and <code>?&gt;</code>. <code>echo</code> prints text, and every statement ends with <code>;</code>. (This academy simulates PHP in your browser for echo, variables and concatenation.)</p><pre>&lt;?php echo "Hello"; ?&gt;</pre>`,
+          breakdown: [
+            `<code>&lt;?php</code> starts PHP mode.`,
+            `<code>echo</code> outputs the text that follows.`,
+            `The semicolon is mandatory: forgetting it is the #1 PHP error.`,
+            `<code>?&gt;</code> returns to plain HTML.`,
+          ],
+          challenge: "Use echo to print Hello, PHP! inside an <h1>.",
+          starterCode: "<?php\n\n?>\n",
+          validationRules: {
+            mustContain: [],
+            mustNotContain: [],
+            mustMatch: [
+              {
+                regex: /<\?php[\s\S]*\becho\s+["'][^"']*["']\s*;/i,
+                message: 'Use echo "…"; inside <?php ?>.',
+              },
+              {
+                regex: /<h1>[^<]*Hello,\s*PHP![^<]*<\/h1>/i,
+                message: "Print <h1>Hello, PHP!</h1> using echo.",
+              },
+            ],
+          },
+        },
+        {
+          id: "php2",
+          module: "php",
+          title: "Variables and concatenation",
+          generalExplanation: `<b>Analogy: sticky notes and name tags.</b> A variable is a sticky note holding a value. The dot glues notes together into one sentence, so the page can greet each visitor by name. <b>Real world:</b> personalised dashboards and emails.`,
+          theoryTitle: "Syntax",
+          theory: `<p>PHP variables start with <code>$</code>. Join strings with the dot operator <code>.</code>.</p><pre>&lt;?php
+$name = "Sam";
+echo "Hi " . $name;
+?&gt;</pre>`,
+          breakdown: [
+            `<code>$name</code> is a variable; the dollar sign is required.`,
+            `<code>=</code> stores the value.`,
+            `<code>.</code> glues pieces of text together.`,
+          ],
+          challenge:
+            "Create $city, then echo a sentence that joins text and $city with a dot.",
+          starterCode: "<?php\n\n?>\n",
+          validationRules: {
+            mustContain: [],
+            mustNotContain: [],
+            mustMatch: [
+              {
+                regex: /\$city\s*=\s*["'][^"']+["']\s*;/,
+                message: 'Create $city = "…"; with a value.',
+              },
+              {
+                regex: /echo\s+[^;]*\.\s*\$city|echo\s+[^;]*\$city\s*\./,
+                message: "echo a sentence that concatenates $city with a dot.",
+              },
+            ],
+          },
+        },
+      ];
+
+      const QUIZ = {
+        html: [
+          [
+            "Which tag makes the largest heading?",
+            ["<h1>", "<head>", "<p>"],
+            0,
+          ],
+          [
+            "Which attribute holds a link destination?",
+            ["src", "href", "alt"],
+            1,
+          ],
+        ],
+        css: [
+          [
+            "Which property centers flex items horizontally?",
+            ["align-text", "justify-content", "float"],
+            1,
+          ],
+          ["Which symbol ends a CSS declaration?", [":", ";", "}"], 1],
+        ],
+        js: [
+          [
+            "Which keyword declares a value that never changes?",
+            ["let", "var", "const"],
+            2,
+          ],
+          [
+            "What prints to the console?",
+            ["console.log()", "print()", "echo"],
+            0,
+          ],
+        ],
+        php: [
+          ["PHP variables start with…", ["@", "$", "#"], 1],
+          ["The PHP concatenation operator is…", ["+", ".", "&"], 1],
+        ],
+      };
+
+      /* ===== Supabase Setup ===== */
+      const SUPABASE_URL = "https://sbgzfajbevuommojblpg.supabase.co",
+        SUPABASE_KEY =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNiZ3pmYWpiZXZ1b21tb2pibHBnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQzMDUwNTMsImV4cCI6MjEwOTg4MTA1M30.tWF-CSSjz21xfRIf-oHnT-JDQTZQ0HzjfAyiBkxYwsg";
+      const sb =
+        SUPABASE_URL && SUPABASE_KEY && window.supabase
+          ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+          : null;
+
+      /* ===== Engine Logic ===== */
+      const PATHS = MODULES;
+      const L = LESSONS.map((x) => ({
+        id: String(x.id),
+        p: x.module,
+        t: x.title,
+        tt: x.theoryTitle || "Syntax",
+        big: x.generalExplanation,
+        th: x.theory,
+        ln: x.breakdown || [],
+        task: x.challenge,
+        code: x.starterCode || "",
+        vr: x.validationRules || {},
+      }));
+      function ruleCheck(v, code) {
+        const f = [],
+          lc = code.toLowerCase();
+        (v.mustContain || []).forEach((s) => {
+          if (!lc.includes(s.toLowerCase()))
+            f.push(["er", "Your code must contain " + s]);
+        });
+        (v.mustNotContain || []).forEach((s) => {
+          if (lc.includes(s.toLowerCase()))
+            f.push(["er", "Remove " + s + " from your code."]);
+        });
+        (v.mustMatch || []).forEach((r) => {
+          if (!r.regex.test(code)) f.push(["er", r.message]);
+        });
+        return f;
+      }
+
+      /* ===== State ===== */
+      const $ = (id) => document.getElementById(id);
+      const esc = (s) =>
+        String(s).replace(
+          /[&<>"]/g,
+          (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c],
+        );
+      let S = { xp: 0, done: [], unlocked: [], drafts: {} },
+        cur = L[0],
+        path = "html",
+        user = null,
+        timer = 0;
+      try {
+        Object.assign(S, JSON.parse(localStorage.getItem("cmp") || "{}"));
+      } catch (e) {}
+      const lvl = () => Math.floor(S.xp / 150) + 1;
+
+      function save() {
+        try {
+          localStorage.setItem("cmp", JSON.stringify(S));
+        } catch (e) {}
+        if (sb && user)
+          sb.from("progress")
+            .upsert({ user_id: user.id, xp: S.xp, done: S.done })
+            .then((r) => {
+              $("sync").textContent = r.error
+                ? "Erreur synchro : " + r.error.message
+                : "Synchronisé avec votre compte.";
+            });
+      }
+
+      const isOpen = (l) => {
+        if (!user && l.id !== "html1") return false;
+        const ls = L.filter((x) => x.p === l.p),
+          i = ls.indexOf(l);
+        return (
+          i === 0 ||
+          S.done.includes(ls[i - 1].id) ||
+          S.unlocked.includes(l.id) ||
+          S.done.includes(l.id)
+        );
+      };
+
+      /* ===== Rendering ===== */
+      function hud() {
+        const l = lvl();
+        $("lvl").textContent = "Level " + l;
+        $("xp").textContent = S.xp + " XP";
+        $("xpb").style.width = ((S.xp % 150) / 150) * 100 + "%";
+      }
+      function renderPaths() {
+        $("paths").innerHTML = Object.entries(PATHS)
+          .map(
+            ([k, v]) =>
+              `<button class="tab" role="tab" aria-selected="${k === path}" data-p="${k}">${v}</button>`,
+          )
+          .join("");
+      }
+      function renderLessonList() {
+        $("lessons").innerHTML = L.filter((x) => x.p === path)
+          .map(
+            (l) =>
+              `<option value="${l.id}" ${l.id === cur.id ? "selected" : ""}>${isOpen(l) ? (S.done.includes(l.id) ? "✓ " : "") : "🔒 "}${esc(l.t)}</option>`,
+          )
+          .join("");
+      }
+      function open(l) {
+        if (!isOpen(l)) {
+          if (!user) {
+            showLanding();
+            alMsg(
+              "Créez un compte ou connectez-vous pour débloquer la suite des cours !",
+              true,
+            );
+          } else {
+            diag([
+              [
+                "er",
+                "Cette leçon est verrouillée. Validez la leçon précédente ou utilisez 'Test my level'.",
+              ],
+            ]);
+          }
+          return;
+        }
+        cur = l;
+        path = l.p;
+        renderPaths();
+        renderLessonList();
+        $("lt").textContent = l.t;
+        $("big").innerHTML = l.big || "";
+        $("tt").textContent = l.tt;
+        $("theory").innerHTML = l.th;
+        $("lines").innerHTML = l.ln
+          .map((x) => `<li style="list-style:decimal">${x}</li>`)
+          .join("");
+        $("task").innerHTML = esc(l.task);
+        $("fn").textContent = {
+          html: "index.html",
+          css: "style.css",
+          js: "script.js",
+          php: "index.php",
+        }[l.p];
+        $("ed").value = S.drafts[l.id] ?? l.code;
+        $("done").textContent = S.done.includes(l.id) ? "Completed ✓" : "";
+        $("done").style.color = "var(--ok)";
+        run();
+      }
+
+      /* ===== Execution + Diagnostics ===== */
+      const VOID =
+        "area base br col embed hr img input link meta param source track wbr".split(
+          " ",
+        );
+      function htmlDiag(src) {
+        const out = [],
+          st = [],
+          re = /<(\/?)([a-zA-Z][\w-]*)[^>]*?(\/?)>/g;
+        let m;
+        const lineOf = (i) => src.slice(0, i).split("\n").length;
+        const clean = src.replace(/<!--[\s\S]*?-->/g, (s) =>
+          s.replace(/[^\n]/g, " "),
+        );
+        while ((m = re.exec(clean))) {
+          const n = m[2].toLowerCase();
+          if (VOID.includes(n) || m[3]) continue;
+          if (!m[1]) st.push([n, lineOf(m.index)]);
+          else {
+            const top = st.pop();
+            if (!top)
+              out.push([
+                "er",
+                `Line ${lineOf(m.index)}: closing </${n}> has no opening tag. Delete it or add <${n}> before it.`,
+              ]);
+            else if (top[0] !== n) {
+              out.push([
+                "er",
+                `Line ${top[1]}: <${top[0]}> is closed by </${n}> on line ${lineOf(m.index)}. Close tags in reverse order of opening.`,
+              ]);
+            }
+          }
+        }
+        st.forEach((t) =>
+          out.push([
+            "er",
+            `Line ${t[1]}: <${t[0]}> is never closed. Add </${t[0]}> after its content.`,
+          ]),
+        );
+        return out;
+      }
+      function cssDiag(src) {
+        const out = [],
+          o = (src.match(/\{/g) || []).length,
+          c = (src.match(/\}/g) || []).length;
+        if (o !== c)
+          out.push([
+            "er",
+            `Unbalanced braces: ${o} “{” vs ${c} “}”. Every rule needs both.`,
+          ]);
+        src.split("\n").forEach((ln, i) => {
+          const t = ln.trim();
+          if (t && !/[{}]|^\/\*|\*\/$|;$|^$/.test(t) && /:/.test(t))
+            out.push([
+              "er",
+              `Line ${i + 1}: declaration missing a semicolon at the end.`,
+            ]);
+        });
+        return out;
+      }
+      function phpRun(src) {
+        const out = [],
+          vars = {};
+        let html = "";
+        const parts = src.split(/(<\?php[\s\S]*?(?:\?>|$))/);
+        parts.forEach((part) => {
+          if (!part.startsWith("<?php")) {
+            html += part;
+            return;
+          }
+          const body = part
+            .replace(/^<\?php/, "")
+            .replace(/\?>$/, "")
+            .replace(/\/\/.*$/gm, "");
+          const base = src.slice(0, src.indexOf(part)).split("\n").length;
+          body.split("\n").forEach((ln, i) => {
+            const t = ln.trim();
+            if (/^(echo|\$\w+\s*=)/.test(t) && !/;$/.test(t))
+              out.push([
+                "er",
+                `Parse error line ${base + i}: missing semicolon “;” at the end of the statement.`,
+              ]);
+          });
+          const ev = (ex) => {
+            let r = "",
+              ok = true;
+            ex.split(/\s*\.\s*(?=(?:[^"']*["'][^"']*["'])*[^"']*$)/).forEach(
+              (tk) => {
+                tk = tk.trim();
+                let m;
+                if ((m = tk.match(/^"([\s\S]*)"$/)))
+                  r += m[1].replace(/\$(\w+)/g, (_, v) =>
+                    v in vars
+                      ? vars[v]
+                      : (out.push(["wn", `Warning: undefined variable $${v}.`]),
+                        ""),
+                  );
+                else if ((m = tk.match(/^'([\s\S]*)'$/))) r += m[1];
+                else if ((m = tk.match(/^\$(\w+)$/))) {
+                  if (m[1] in vars) r += vars[m[1]];
+                  else
+                    out.push([
+                      "wn",
+                      `Warning: undefined variable $${m[1]}. Assign it before echo.`,
+                    ]);
+                } else if (/^-?\d+(\.\d+)?$/.test(tk)) r += tk;
+                else if (tk) {
+                  out.push([
+                    "er",
+                    `Parse error: cannot understand “${tk}”. Strings need quotes.`,
+                  ]);
+                  ok = false;
+                }
+              },
+            );
+            return r;
+          };
+          body.split(";").forEach((s) => {
+            s = s.trim();
+            let m;
+            if ((m = s.match(/^\$(\w+)\s*=\s*([\s\S]+)$/)))
+              vars[m[1]] = ev(m[2]);
+            else if ((m = s.match(/^echo\s+([\s\S]+)$/))) html += ev(m[1]);
+            else if (s)
+              out.push([
+                "er",
+                `Parse error: unsupported statement “${esc(s.slice(0, 30))}”. Use echo or $var = value;`,
+              ]);
+          });
+        });
+        return { html, out };
+      }
+      function build(code) {
+        const l = cur;
+        const doc = (b, s = "", x = "") =>
+          `<!doctype html><meta charset="utf-8"><style>body{font-family:system-ui;padding:12px;color:#111}${s}</style>${b}${x}`;
+        if (l.p === "html") return { doc: doc(code), d: htmlDiag(code) };
+        if (l.p === "css")
+          return {
+            doc: doc(
+              '<h1>Hello CodeMaster</h1><p>First paragraph.</p><p>Second paragraph.</p><div class="box">Content box</div><div class="card"><span>A</span><span>B</span><span>C</span></div>',
+              code,
+            ),
+            d: cssDiag(code),
+          };
+        if (l.p === "php") {
+          const r = phpRun(code);
+          return { doc: doc(r.html), d: r.out };
+        }
+        const shim = `<script>const _o=document.createElement("pre");_o.id="con";document.addEventListener("DOMContentLoaded",()=>document.body.append(_o));
+const _l=console.log;console.log=(...a)=>{_o.textContent+=a.map(x=>typeof x=="object"?JSON.stringify(x):x).join(" ")+"\\n";parent.postMessage({t:"log"},"*")};
+addEventListener("error",e=>parent.postMessage({t:"err",m:e.message,l:e.lineno},"*"));
+<\/script>`;
+        return {
+          doc: doc(
+            '<button id="btn">Click me</button><div id="app"></div>',
+            "pre{background:#f1f5f9;padding:8px;border-radius:6px}",
+            shim +
+              "<script>" +
+              code.replace(/<\/script/gi, "<\\/script") +
+              "\n<\/script>",
+          ),
+          d: [],
+        };
+      }
+      let jsErr = null;
+      addEventListener("message", (e) => {
+        if (e.data && e.data.t === "err") {
+          jsErr = e.data;
+          diag([
+            [
+              "er",
+              `Runtime error${e.data.l ? " (line " + (e.data.l - 0) + ")" : ""}: ${e.data.m}. Check spelling, quotes and that every variable is defined before use.`,
+            ],
+          ]);
+        }
+      });
+      function diag(items) {
+        $("dg").innerHTML = items.length
+          ? items
+              .map(
+                ([k, m]) =>
+                  `<div class="dg" style="color:var(${k === "er" ? "--er" : k === "wn" ? "--xp" : "--ok"})">${k === "ok" ? "✓" : k === "wn" ? "⚠" : "✗"} ${esc(m)}</div>`,
+              )
+              .join("")
+          : '<div class="dg" style="color:var(--ok)">✓ No problems detected. Ready to validate.</div>';
+      }
+      function run() {
+        const code = $("ed").value;
+        S.drafts[cur.id] = code;
+        jsErr = null;
+        const r = build(code);
+        $("pv").srcdoc = r.doc;
+        diag(r.d);
+      }
+
+      function validate() {
+        const code = $("ed").value,
+          r = build(code),
+          fails = [];
+        fails.push(...ruleCheck(cur.vr, code));
+        if (r.d.some((x) => x[0] === "er"))
+          fails.push(...r.d.filter((x) => x[0] === "er"));
+        if (jsErr)
+          fails.push(["er", "Fix the runtime error first: " + jsErr.m]);
+        if (fails.length)
+          return diag([
+            ["er", "Not quite yet. Here is what is missing:"],
+            ...fails,
+          ]);
+        if (S.done.includes(cur.id))
+          return diag([
+            ["ok", "Valid again. You already earned XP for this lesson."],
+          ]);
+
+        const before = lvl();
+        S.done.push(cur.id);
+        S.xp += 50;
+        save();
+        hud();
+
+        if (!user && cur.id === "html1") {
+          setTimeout(() => {
+            showLanding();
+            alMsg(
+              "🎉 Bravo pour la 1ère leçon gratuite ! Créez votre compte pour débloquer la suite.",
+              false,
+            );
+          }, 1000);
+          return;
+        }
+
+        const ls = L.filter((x) => x.p === cur.p),
+          nx = ls[ls.indexOf(cur) + 1];
+        diag([
+          [
+            "ok",
+            `+50 XP! ${lvl() > before ? "Level up: you are now level " + lvl() + ". " : ""}${nx ? "Unlocked: " + nx.t : "You finished the " + PATHS[path] + " path."}`,
+          ],
+        ]);
+        $("done").textContent = "Completed ✓";
+        renderLessonList();
+      }
+
+      const SN = {
+        h1: ["<h1></h1>", 4],
+        p: ["<p></p>", 3],
+        ul: ["<ul>\n  <li></li>\n  <li></li>\n  <li></li>\n</ul>", 13],
+        a: ['<a href=""></a>', 9],
+        html5: [
+          '<!doctype html>\n<html lang="en">\n<head>\n  <meta charset="utf-8">\n  <title></title>\n</head>\n<body>\n  \n</body>\n</html>',
+          0,
+        ],
+        log: ["console.log();", 12],
+        fn: ["function name() {\n  \n}", 9],
+        echo: ['echo "";', 6],
+        php: ["<?php\n\n?>", 7],
+        flex: ["display: flex;\njustify-content: center;\ngap: 16px;", 0],
+      };
+      $("ed").addEventListener("keydown", (e) => {
+        if (e.key !== "Tab") return;
+        e.preventDefault();
+        const t = e.target,
+          s = t.selectionStart,
+          w = /[\w]+$/.exec(t.value.slice(0, s));
+        if (w && SN[w[0]]) {
+          const [txt, off] = SN[w[0]],
+            a = s - w[0].length;
+          t.setRangeText(txt, a, s, "end");
+          t.selectionStart = t.selectionEnd = off ? a + off : a + txt.length;
+        } else t.setRangeText("  ", s, t.selectionEnd, "end");
+        run();
+      });
+      $("ed").addEventListener("input", () => {
+        clearTimeout(timer);
+        timer = setTimeout(run, 350);
+      });
+
+      function jump() {
+        if (!user) {
+          showLanding();
+          alMsg("Connectez-vous pour passer le test de niveau.", true);
+          return;
+        }
+        const qs = QUIZ[path];
+        let i = 0,
+          ok = 0;
+        const d = $("dlg"),
+          step = () => {
+            if (i >= qs.length) {
+              const pass = ok === qs.length;
+              if (pass) {
+                L.filter((x) => x.p === path).forEach(
+                  (x) => !S.unlocked.includes(x.id) && S.unlocked.push(x.id),
+                );
+                save();
+                renderLessonList();
+              }
+              $("dlgb").innerHTML =
+                `<h3 class="font-bold text-lg">${pass ? "Niveau confirmé" : "Pas encore"}</h3><p class="my-2">${pass ? "Toutes les leçons " + PATHS[path] + " sont débloquées." : "Score : " + ok + "/" + qs.length + ". Continuez les leçons et réessayez."}</p><button class="btn" id="cl">Fermer</button>`;
+              $("cl").onclick = () => d.close();
+              return;
+            }
+            const [q, o] = qs[i];
+            $("dlgb").innerHTML =
+              `<h3 class="font-bold text-lg">Test ${PATHS[path]} (${i + 1}/${qs.length})</h3><p class="my-2">${esc(q)}</p>` +
+              o
+                .map(
+                  (x, k) =>
+                    `<button class="tab block w-full text-left mb-2" data-k="${k}">${esc(x)}</button>`,
+                )
+                .join("");
+            $("dlgb")
+              .querySelectorAll("[data-k]")
+              .forEach(
+                (b) =>
+                  (b.onclick = () => {
+                    if (+b.dataset.k === qs[i][2]) ok++;
+                    i++;
+                    step();
+                  }),
+              );
+          };
+        step();
+        d.showModal();
+      }
+
+      function authUI() {
+        if (!user) {
+          showLanding();
+          return;
+        }
+        const d = $("dlg");
+        const meta = user.user_metadata || {};
+        const fullName =
+          meta.prenom && meta.nom ? `${meta.prenom} ${meta.nom}` : user.email;
+        $("dlgb").innerHTML = `
+    <p class="mb-1">Connecté en tant que : <b>${esc(fullName)}</b></p>
+    <p class="text-xs text-gray-500 mb-3">${esc(user.email)}</p>
+    <button class="btn w-full" id="so">Se déconnecter</button>`;
+        $("so").onclick = async () => {
+          await sb.auth.signOut();
+          user = null;
+          $("auth").textContent = "Connexion";
+          d.close();
+          showLanding();
+        };
+        d.showModal();
+      }
+
+      function showWelcomeScreen(u) {
+        const meta = u.user_metadata || {};
+        let firstName =
+          meta.prenom ||
+          (u.email ? u.email.split("@")[0].replace(/[0-9_.-]/g, "") : "Codeur");
+        firstName =
+          firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
+
+        const userLevel = meta.level || "debutant";
+        const levelLabels = {
+          debutant: "🌱 Niveau : Débutant",
+          intermediaire: "⚡ Niveau : Intermédiaire",
+          pro: "🚀 Niveau : Pro",
+        };
+
+        $("wc-title").textContent = `Bonjour ${firstName}`;
+        $("wc-avatar").textContent = firstName.charAt(0).toUpperCase();
+        $("wc-level-badge").textContent =
+          levelLabels[userLevel] || "🌱 Niveau : Débutant";
+        $("welcome-screen").hidden = false;
+
+        $("wc-btn").onclick = () => {
+          $("welcome-screen").hidden = true;
+        };
+      }
+
+      async function onUser(u) {
+        hideLanding();
+        user = u;
+        $("auth").textContent = "Mon Compte";
+
+        // Auto-unlock lessons based on chosen level during signup
+        const meta = u.user_metadata || {};
+        if (meta.level === "intermediaire") {
+          L.filter((x) => x.p === "html" || x.p === "css").forEach(
+            (x) => !S.unlocked.includes(x.id) && S.unlocked.push(x.id),
+          );
+        } else if (meta.level === "pro") {
+          L.forEach((x) => !S.unlocked.includes(x.id) && S.unlocked.push(x.id));
+        }
+
+        const r = await sb
+          .from("progress")
+          .select("xp,done")
+          .eq("user_id", u.id)
+          .maybeSingle();
+        if (r.data) {
+          S.xp = Math.max(S.xp, r.data.xp);
+          S.done = [...new Set([...S.done, ...(r.data.done || [])])];
+        }
+        S.xp = Math.max(S.xp, S.done.length * 50);
+        save();
+        hud();
+        renderLessonList();
+        open(cur);
+
+        showWelcomeScreen(u);
+      }
+
+      /* ===== Wire up Events ===== */
+      $("paths").onclick = (e) => {
+        const b = e.target.closest("[data-p]");
+        if (b)
+          open(
+            L.find(
+              (l) => l.p === b.dataset.p && isOpen(l) && !S.done.includes(l.id),
+            ) || L.find((l) => l.p === b.dataset.p),
+          );
+      };
+      $("lessons").onchange = (e) =>
+        open(L.find((l) => l.id === e.target.value));
+      $("check").onclick = validate;
+      $("jump").onclick = jump;
+      $("auth").onclick = authUI;
+      $("reset").onclick = () => {
+        delete S.drafts[cur.id];
+        open(cur);
+      };
+      $("theme").onclick = () => {
+        const r = document.documentElement,
+          dk = matchMedia("(prefers-color-scheme:dark)").matches;
+        const now = r.dataset.theme || (dk ? "dark" : "light");
+        r.dataset.theme = now === "dark" ? "light" : "dark";
+      };
+
+      /* ===== Landing & Auth Form Controls ===== */
+      let alMode = "up";
+      const showLanding = () => {
+        $("auth-landing").hidden = false;
+      };
+      const hideLanding = () => {
+        $("auth-landing").hidden = true;
+      };
+      function enterGuest() {
+        hideLanding();
+        open(L.find((l) => l.id === "html1") || L[0]);
+      }
+
+      function setMode(m) {
+        alMode = m;
+        const up = m === "up";
+
+        $("tab-signup").classList.toggle("active", up);
+        $("tab-login").classList.toggle("active", !up);
+        $("signup-fields").style.display = up ? "block" : "none";
+
+        $("alh").textContent = up ? "Nouveau compte" : "Bon retour !";
+        $("alsub-desc").textContent = up
+          ? "Remplissez vos informations pour personnaliser votre parcours."
+          : "Entrez votre email et mot de passe pour continuer.";
+        $("alsub").textContent = up
+          ? "Créer mon compte & Vérifier l'email"
+          : "Se connecter";
+        $("alpl").textContent = up
+          ? "Créer un mot de passe *"
+          : "Mot de passe *";
+        $("alpw").autocomplete = up ? "new-password" : "current-password";
+        $("almsg").textContent = "";
+      }
+
+      function alMsg(t, bad) {
+        const m = $("almsg");
+        m.textContent = t;
+        m.style.color = bad ? "#b3261e" : "#0a7a55";
+      }
+
+      async function alSubmit() {
+        if (!sb) return alMsg("Supabase n'est pas configuré.", true);
+
+        const email = $("alem").value.trim();
+        const password = $("alpw").value;
+
+        if (!email || !email.includes("@"))
+          return alMsg("Veuillez entrer une adresse email valide.", true);
+        if (password.length < 6)
+          return alMsg(
+            "Le mot de passe doit contenir au moins 6 caractères.",
+            true,
+          );
+
+        $("alsub").disabled = true;
+        alMsg("Vérification en cours…", false);
+
+        try {
+          if (alMode === "up") {
+            const prenom = $("al-prenom").value.trim();
+            const nom = $("al-nom").value.trim();
+            const dob = $("al-dob").value;
+            const level = $("al-level").value;
+
+            if (!prenom || !nom || !dob) {
+              $("alsub").disabled = false;
+              return alMsg(
+                "Veuillez remplir votre Prénom, Nom et Date de naissance.",
+                true,
+              );
+            }
+
+            const r = await sb.auth.signUp({
+              email,
+              password,
+              options: {
+                emailRedirectTo: location.href.split("#")[0],
+                data: { prenom, nom, dob, level },
+              },
+            });
+
+            if (r.error) {
+              alMsg("Erreur : " + r.error.message, true);
+            } else if (r.data.user && !r.data.session) {
+              // Email verification required!
+              alMsg(
+                "📩 Un email de vérification a été envoyé à " +
+                  email +
+                  ". Veuillez vérifier votre boîte de réception (et les spams) et cliquer sur le lien pour activer votre compte !",
+                false,
+              );
+            } else if (r.data.session) {
+              await onUser(r.data.session.user);
+            }
+          } else {
+            // Login Mode
+            const r = await sb.auth.signInWithPassword({ email, password });
+            if (r.error) {
+              if (r.error.message.includes("Email not confirmed")) {
+                alMsg(
+                  "⚠️ Votre email n'est pas encore vérifié. Cliquez sur le lien envoyé dans votre boîte mail.",
+                  true,
+                );
+              } else {
+                alMsg("Email ou mot de passe incorrect.", true);
+              }
+            } else if (r.data.session) {
+              await onUser(r.data.session.user);
+            }
+          }
+        } catch (e) {
+          alMsg("Erreur réseau : " + e.message, true);
+        }
+
+        $("alsub").disabled = false;
+      }
+
+      $("alguest").onclick = enterGuest;
+      $("alsub").onclick = alSubmit;
+      $("tab-signup").onclick = () => setMode("up");
+      $("tab-login").onclick = () => setMode("in");
+      $("alpw").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") alSubmit();
+      });
+
+      if (sb) {
+        sb.auth.getSession().then((r) => {
+          if (r.data.session) {
+            onUser(r.data.session.user);
+          } else {
+            showLanding();
+          }
+        });
+      } else {
+        showLanding();
+      }
+
+      hud();
+      open(cur);
+    </script>
+  </body>
+</html>
